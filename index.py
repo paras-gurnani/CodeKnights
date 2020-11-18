@@ -1,6 +1,8 @@
+
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+from PIL import ImageTk,Image
 
 class MainPage:
     def __init__(self,window):
@@ -10,7 +12,7 @@ class MainPage:
         self.add_labels()
         self.add_buttons()
         self.add_loader()
-        self.convert()
+        #self.convert()
 
 
 
@@ -20,19 +22,27 @@ class MainPage:
 
     def add_buttons(self):
         # upload_icon = PhotoImage(file = r'D:\coding\DevnagiriOCR\upload_icon.png')
-        self.upload_pdf = Button(self.frame,command=self.browse,text='Upload the pdf file',padx=10,font=('Seoge UI Black bold',15),bg='white')
-        self.upload_pdf.place(x=210,y=200)
-        self.convert_button=Button(self.frame,command=self.load,text='Convert',padx=10,font=('Seoge UI Black',10),bg='white')
-        self.convert_button.place(x=420,y=205)
+        self.upload_icon=ImageTk.PhotoImage(Image.open("upload.png"))
+        self.upload_label=Label(self.frame,text="Upload the file")
+        self.upload_label.place(x=240,y=205)
+        self.upload_label.config(font=('Seoge UI Black bold',18))
+
+        
+        #self.upload_label.place(x=150,y=200)
+        self.upload_pdf = Button(self.frame,image=self.upload_icon,command=self.browse,text='Upload the pdf file',padx=10,bg='white')
+        self.upload_pdf.place(x=420,y=200)
+        self.convert_button=Button(self.frame,command=self.save,text='Convert',padx=10,font=('Seoge UI Black',10),bg='white')
+        self.convert_button.place(x=310,y=255)
         self.excel_sheet = Button(self.frame,text='Converted Excel Sheet',padx=10,font=('Seoge UI Black bold',15),bg='white')
         self.excel_sheet.place(x=235,y=340)
 
     def add_loader(self):
         self.progress = ttk.Progressbar(self.frame, orient=HORIZONTAL,length=250, mode='determinate')
-        self.progress.place(x=225,y=275)
+        self.progress.place(x=225,y=305)
+       
 
-    def convert(self):
-        pass
+    #def convert(self):
+        #pass
 
     def load(self):
         import time
@@ -61,9 +71,23 @@ class MainPage:
         self.filename = filedialog.askopenfilename(initialdir='/', title='Select PDF')
         print(type(self.filename), self.filename)
 
+    def save(self):
+        
+        self.load()
+        files = [('Excel Files', '*.xlsx')] 
+        file = filedialog.asksaveasfilename(filetypes = files, defaultextension = '.xlsx')
+        print(file)
+        workbook = xlsxwriter.Workbook(file)
+        worksheet = workbook.add_worksheet()
+        bold = workbook.add_format({'bold': True})
+        row=0
+        worksheet.write(row, 0, 'महारा',bold)
+        workbook.close()
 
 if __name__=='__main__':
     window = Tk()
     window.geometry('740x640')
     MainPage(window)
     window.mainloop()
+
+
