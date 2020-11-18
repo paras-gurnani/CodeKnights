@@ -1,8 +1,9 @@
-
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from PIL import ImageTk,Image
+from pdf2image import convert_from_path
+
 
 class MainPage:
     def __init__(self,window):
@@ -70,6 +71,10 @@ class MainPage:
     def browse(self):
         self.filename = filedialog.askopenfilename(initialdir='/', title='Select PDF')
         print(type(self.filename), self.filename)
+        self.images = convert_from_path(self.filename, poppler_path=r"D:\popler\Release-20.11.0\poppler-20.11.0\bin")
+        print(type(self.images), len(self.images))
+        for ind, image in enumerate(self.images):
+            print(image.save(f"output{ind}.jpg", "JPEG"))
 
     def save(self):
         
@@ -89,5 +94,3 @@ if __name__=='__main__':
     window.geometry('740x640')
     MainPage(window)
     window.mainloop()
-
-
