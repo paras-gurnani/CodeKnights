@@ -1,3 +1,4 @@
+
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
@@ -38,7 +39,7 @@ class MainPage:
     def add_loader(self):
         self.progress = ttk.Progressbar(self.frame, orient=HORIZONTAL,length=250, mode='determinate')
         self.progress.place(x=225,y=305)
-        self.progress.visible=False
+       
 
     #def convert(self):
         #pass
@@ -71,7 +72,7 @@ class MainPage:
         print(type(self.filename), self.filename)
 
     def save(self):
-        self.progress.visible = True
+        
         self.load()
         files = [('Excel Files', '*.xlsx')] 
         file = filedialog.asksaveasfilename(filetypes = files, defaultextension = '.xlsx')
@@ -88,3 +89,5 @@ if __name__=='__main__':
     window.geometry('740x640')
     MainPage(window)
     window.mainloop()
+
+
