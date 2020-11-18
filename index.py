@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from PIL import ImageTk,Image
 from pdf2image import convert_from_path
+import xlsxwriter
 
 
 class MainPage:
@@ -73,17 +74,23 @@ class MainPage:
         print(type(self.filename), self.filename)
         self.images = convert_from_path(self.filename, poppler_path=r"D:\popler\Release-20.11.0\poppler-20.11.0\bin")
         print(type(self.images), len(self.images))
+        self.imageslist=[]
         for ind, image in enumerate(self.images):
             print(image.save(f"output{ind}.jpg", "JPEG"))
+            imagename="output"+str(ind)+".jpg"
+            self.imageslist.append(imagename)
+
+        print(self.imageslist)
 
     def save(self):
-        
         self.load()
         files = [('Excel Files', '*.xlsx')] 
         file = filedialog.asksaveasfilename(filetypes = files, defaultextension = '.xlsx')
         print(file)
         workbook = xlsxwriter.Workbook(file)
-        worksheet = workbook.add_worksheet()
+        for image in self.imageslist:
+             worksheet = workbook.add_worksheet()
+        #worksheet = workbook.add_worksheet()
         bold = workbook.add_format({'bold': True})
         row=0
         worksheet.write(row, 0, 'महारा',bold)
